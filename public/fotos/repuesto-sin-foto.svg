@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#F3F6FB"/>
+  <g fill="none" stroke="#1F4E9E" stroke-width="10" opacity=".35">
+    <circle cx="200" cy="140" r="52"/>
+    <circle cx="200" cy="140" r="18"/>
+    <path d="M200 70v-18M200 228v-18M130 140h-18M288 140h-18M150 90l-13-13M263 203l-13-13M150 190l-13 13M263 77l-13 13"/>
+  </g>
+  <text x="200" y="262" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#4A5466">Foto pendiente</text>
+</svg>

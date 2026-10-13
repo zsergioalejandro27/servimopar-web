@@ -1,0 +1,6 @@
+slug,nombre,categoria,marca_repuesto,numero_parte,vehiculo_marca,vehiculo_modelo,anio_desde,anio_hasta,precio_cop,stock,foto,descripcion
+ejemplo-soporte-motor-dodge-journey,EJEMPLO Soporte de motor,Motor,MARCA EJEMPLO,EJEMPLO-0001,Dodge,Journey,2009,2020,123456,3,,"EJEMPLO: dato falso para probar la plantilla. No publicar."
+ejemplo-pastillas-freno-delanteras-dodge-journey,EJEMPLO Pastillas de freno delanteras,Frenos,MARCA EJEMPLO,EJEMPLO-0002,Dodge,Journey,2011,2020,99999,0,,"EJEMPLO: dato falso. Prueba de producto agotado (stock 0)."
+ejemplo-bomba-agua-dodge-journey,EJEMPLO Bomba de agua,Motor,,EJEMPLO-0003,Dodge,Journey,2009,2010,,5,,"EJEMPLO: dato falso. Prueba sin precio (debe decir cotizar) y sin marca de repuesto."
+ejemplo-filtro-aire-dodge-journey,EJEMPLO Filtro de aire,Filtros,MARCA EJEMPLO,,Dodge,Journey,2012,2012,11111,,,"EJEMPLO: dato falso. Prueba sin número de parte, sin stock definido y un solo año."
+ejemplo-rotula-inferior-dodge-journey,EJEMPLO Rótula inferior,Suspensión,MARCA EJEMPLO,EJEMPLO-0005,Dodge,Journey,,,,,,
