@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: actualizar con el dominio definitivo (etapa 8)
+Sitemap: https://servimopar.pages.dev/sitemap-index.xml

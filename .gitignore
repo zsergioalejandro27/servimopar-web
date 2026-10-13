@@ -1,0 +1,13 @@
+# Dependencias y salidas de build (se regeneran, no se suben a Git)
+node_modules/
+dist/
+.astro/
+
+# Variables de entorno locales
+.env
+.env.*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
