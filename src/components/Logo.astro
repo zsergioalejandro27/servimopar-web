@@ -1,0 +1,22 @@
+---
+// Logo en línea (inline) para que use la Montserrat que ya carga la página
+// y no cueste una petición extra. Las versiones en archivo están en /public/logos/.
+interface Props {
+  variante?: 'color' | 'blanco';
+  class?: string;
+}
+const { variante = 'color', class: clase } = Astro.props;
+const principal = variante === 'blanco' ? '#FFFFFF' : '#1F4E9E';
+const secundario = variante === 'blanco' ? '#FFFFFF' : '#1E2430';
+const franja2 = variante === 'blanco' ? '#FFFFFF' : '#D32F2F';
+---
+<svg class={clase} viewBox="0 0 520 124" role="img" aria-label="Servimopar" xmlns="http://www.w3.org/2000/svg">
+  <text x="0" y="60" textLength="516" lengthAdjust="spacingAndGlyphs"
+        font-family="Montserrat, 'Arial Black', Arial, sans-serif" font-weight="800" font-size="64"
+        fill={principal}>SERVIMOPAR</text>
+  <rect x="2" y="74" width="150" height="8" rx="2" fill="#E0A92E" />
+  <rect x="158" y="74" width="34" height="8" rx="2" fill={franja2} />
+  <text x="2" y="112" textLength="512" lengthAdjust="spacingAndGlyphs"
+        font-family="Inter, Arial, sans-serif" font-weight="600" font-size="15"
+        fill={secundario}>REPUESTOS · IMPORTADORES Y DISTRIBUIDORES</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 124" width="520" height="124" role="img" aria-labelledby="t">
+  <title id="t">Servimopar · Repuestos, importadores y distribuidores</title>
+  <!-- Versión blanca para fondos azules. PROVISIONAL: convertir textos a curvas en la versión final. -->
+  <text x="0" y="60" textLength="516" lengthAdjust="spacingAndGlyphs"
+        font-family="Montserrat, 'Arial Black', Arial, sans-serif" font-weight="800" font-size="64"
+        fill="#FFFFFF">SERVIMOPAR</text>
+  <rect x="2" y="74" width="150" height="8" rx="2" fill="#E0A92E"/>
+  <rect x="158" y="74" width="34" height="8" rx="2" fill="#FFFFFF"/>
+  <text x="2" y="112" textLength="512" lengthAdjust="spacingAndGlyphs"
+        font-family="Inter, Arial, sans-serif" font-weight="600" font-size="15"
+        fill="#FFFFFF">REPUESTOS · IMPORTADORES Y DISTRIBUIDORES</text>
+</svg>

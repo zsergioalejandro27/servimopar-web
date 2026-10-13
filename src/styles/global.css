@@ -1,0 +1,109 @@
+/* ==========================================================================
+   Tokens de marca (MARCA.md). Todo color o fuente del sitio sale de aquí.
+   ========================================================================== */
+:root {
+  --azul: #1f4e9e;          /* primario: encabezado, botones, enlaces */
+  --azul-noche: #0f2a5c;    /* primario oscuro: títulos grandes, pie */
+  --rojo: #d32f2f;          /* solo llamadas a la acción importantes */
+  --rojo-oscuro: #b71c1c;
+  --dorado: #e0a92e;        /* detalles pequeños; nunca texto sobre blanco */
+  --terracota: #c0603a;
+  --blanco: #ffffff;
+  --fondo-suave: #f3f6fb;
+  --texto: #1e2430;
+  --texto-suave: #4a5466;
+  --borde: #d8dfeb;
+  --whatsapp: #25d366;
+  --whatsapp-oscuro: #128c4b;
+
+  --fuente-titulos: 'Montserrat', 'Arial Black', system-ui, sans-serif;
+  --fuente-texto: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Monoespaciada del sistema para números de parte: evita descargar otra fuente. */
+  --fuente-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  --radio: 10px;
+  --sombra: 0 2px 10px rgb(15 42 92 / 0.08);
+  --ancho-max: 1120px;
+  --gutter: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--blanco);
+  color: var(--texto);
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: var(--fuente-titulos);
+  color: var(--azul-noche);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 800; }
+h2 { font-size: clamp(1.3rem, 3.6vw, 1.8rem); font-weight: 800; }
+h3 { font-size: 1.1rem; font-weight: 700; }
+
+p { margin: 0 0 1em; }
+a { color: var(--azul); }
+img { max-width: 100%; height: auto; display: block; }
+
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.seccion { padding-block: 40px; }
+.seccion--suave { background: var(--fondo-suave); }
+
+.mono { font-family: var(--fuente-mono); }
+
+.visualmente-oculto {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Botones ------------------------------------------------------------------ */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+  min-height: 48px; /* objetivo táctil cómodo en celular */
+  padding: 0.7em 1.3em;
+  border: 0; border-radius: var(--radio);
+  font: 700 1rem/1.2 var(--fuente-titulos);
+  text-decoration: none; cursor: pointer;
+}
+.boton--azul { background: var(--azul); color: var(--blanco); }
+.boton--azul:hover { background: var(--azul-noche); }
+.boton--whatsapp { background: var(--whatsapp-oscuro); color: var(--blanco); }
+.boton--whatsapp:hover { background: #0e7340; }
+.boton--borde { background: transparent; color: var(--azul); box-shadow: inset 0 0 0 2px var(--azul); }
+.boton svg { width: 1.3em; height: 1.3em; flex: none; }
+
+/* Formularios --------------------------------------------------------------- */
+label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+input, select {
+  width: 100%; min-height: 48px; padding: 0.6em 0.8em;
+  border: 1px solid var(--borde); border-radius: var(--radio);
+  font: inherit; background: var(--blanco); color: var(--texto);
+}
+input:focus-visible, select:focus-visible, a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--dorado); outline-offset: 2px;
+}
+
+/* Rejilla de tarjetas ---------------------------------------------------------- */
+.rejilla { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 560px) { .rejilla { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .rejilla { grid-template-columns: repeat(3, 1fr); } }
+
+.aviso {
+  border-left: 4px solid var(--dorado);
+  background: #fff8e6; padding: 10px 14px; border-radius: 6px; font-size: 0.95rem;
+}
