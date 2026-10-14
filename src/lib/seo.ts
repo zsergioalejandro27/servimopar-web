@@ -1,7 +1,7 @@
 // Datos estructurados (JSON-LD, schema.org) y metadatos.
 // El JSON-LD no cambia lo que ve la persona: le describe a Google, en un
 // formato que entiende sin ambigüedad, qué es la página (un negocio, un producto).
-import { negocio } from '../config/negocio';
+import { negocio, fotosLocal } from '../config/negocio';
 import {
   type Repuesto, tituloRepuesto, disponibilidad, rangoAnios, vehiculo,
 } from './inventario';
@@ -23,7 +23,8 @@ export function jsonLdNegocio(site: URL | undefined) {
     description: n.descripcion,
     url: absoluta('/', site),
     logo: absoluta('/logos/servimopar-cuadrado-512.png', site),
-    image: absoluta('/og-servimopar.png', site), // TODO: usar foto real de la fachada cuando esté
+    // Fotos reales del local: Google las usa para mostrar el negocio.
+    image: [fotosLocal.fachadaCerrada, fotosLocal.fachadaAbierta, fotosLocal.interior].map((f) => absoluta(f.src, site)),
     telephone: n.telefono.e164,
     email: n.correo,
     address: {

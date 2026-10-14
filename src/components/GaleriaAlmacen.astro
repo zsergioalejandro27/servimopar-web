@@ -1,0 +1,35 @@
+---
+import Foto from './Foto.astro';
+import { fotosLocal } from '../config/negocio';
+
+const fotos = [
+  { ...fotosLocal.fachadaCerrada, pie: 'El letrero y el portón azul: Cra. 15 No. 24-36' },
+  { ...fotosLocal.entrada, pie: 'Vitrinas a la entrada' },
+  { ...fotosLocal.interior, pie: 'Estantería y mezzanine' },
+];
+---
+<div class="galeria">
+  {fotos.map((f) => (
+    <figure>
+      <Foto src={f.src} alt={f.alt} sizes="(min-width: 900px) 360px, (min-width: 560px) 50vw, 100vw" />
+      <figcaption>{f.pie}</figcaption>
+    </figure>
+  ))}
+</div>
+
+<style>
+  /* Celular: carrusel deslizable con el dedo (solo CSS, scroll-snap). */
+  .galeria {
+    display: grid; gap: 14px;
+    grid-auto-flow: column; grid-auto-columns: 78%;
+    overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px;
+  }
+  figure { scroll-snap-align: start; }
+  @media (min-width: 560px) {
+    .galeria { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(2, 1fr); overflow: visible; }
+  }
+  @media (min-width: 900px) { .galeria { grid-template-columns: repeat(3, 1fr); } }
+  figure { margin: 0; background: var(--blanco); border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra); }
+  figure :global(img) { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+  figcaption { padding: 10px 14px; font-weight: 600; color: var(--azul-noche); border-top: 4px solid var(--dorado); }
+</style>

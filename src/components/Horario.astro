@@ -1,0 +1,18 @@
+---
+import { horarioLegible } from '../config/negocio';
+---
+<dl class="horario">
+  {horarioLegible.map((h) => (
+    <div>
+      <dt>{h.dias}</dt>
+      <dd>{h.horas}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .horario { margin: 0; }
+  .horario div { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px dashed currentColor; border-color: rgb(127 127 127 / 0.35); }
+  dt { font-weight: 600; }
+  dd { margin: 0; white-space: nowrap; }
+</style>

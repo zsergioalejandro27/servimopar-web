@@ -3,10 +3,14 @@ import Base from '../layouts/Base.astro';
 import TarjetaRepuesto from '../components/TarjetaRepuesto.astro';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Mapa from '../components/Mapa.astro';
+import Foto from '../components/Foto.astro';
+import Horario from '../components/Horario.astro';
+import FranjaMarcas from '../components/FranjaMarcas.astro';
+import GaleriaAlmacen from '../components/GaleriaAlmacen.astro';
 import { inventario } from '../lib/inventario';
 import { jsonLdNegocio } from '../lib/seo';
 import { enlaceWhatsApp } from '../lib/whatsapp';
-import { negocio, direccionCompleta } from '../config/negocio';
+import { negocio, direccionCompleta, fotosLocal } from '../config/negocio';
 
 const destacados = inventario.slice(0, 6);
 const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'NPR', 'NKR'];
@@ -17,7 +21,10 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
   jsonLd={[jsonLdNegocio(Astro.site)]}
 >
   <section class="portada">
-    <div class="contenedor">
+    <!-- Foto real de la estantería. Es lo primero que se ve: carga con prioridad (LCP). -->
+    <Foto src={fotosLocal.interior.src} alt="" sizes="100vw" prioridad class="portada__foto" />
+    <div class="contenedor portada__texto">
+      <p class="portada__ubicacion">Cra. 15 No. 24-36 · Centro · Bucaramanga</p>
       <h1>Repuestos para Chevrolet, Dodge, Ram y Jeep en Bucaramanga</h1>
       <p class="portada__sub">Dinos tu modelo y año, y te confirmamos si lo tenemos.</p>
       <div class="portada__botones">
@@ -29,11 +36,13 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
     </div>
   </section>
 
+  <FranjaMarcas />
+
   <!-- Buscador: arma un mensaje de WhatsApp con los datos del vehículo.
        Cuando exista el catálogo (etapa 3) se agregará la búsqueda en el inventario. -->
   <section class="seccion seccion--suave">
     <div class="contenedor">
-      <h2>¿Qué repuesto buscas?</h2>
+      <h2 class="titulo-seccion">¿Qué repuesto buscas?</h2>
       <form class="buscador" id="buscador" action={enlaceWhatsApp()} method="get" target="_blank">
         <div>
           <label for="b-marca">Marca</label>
@@ -62,7 +71,7 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
   {destacados.length > 0 && (
     <section class="seccion">
       <div class="contenedor">
-        <h2>Repuestos destacados</h2>
+        <h2 class="titulo-seccion">Repuestos destacados</h2>
         <div class="rejilla">
           {destacados.map((r) => <TarjetaRepuesto repuesto={r} />)}
         </div>
@@ -70,26 +79,30 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
     </section>
   )}
 
-  <section class="seccion seccion--suave">
+  <section class="seccion">
     <div class="contenedor">
-      <h2>Marcas que atendemos</h2>
-      <ul class="marcas">
-        {negocio.marcas.map((m) => <li>{m}</li>)}
-      </ul>
-      <p>Somos importadores y distribuidores. En cada repuesto te indicamos la marca de la pieza y su número de parte.</p>
+      <h2 class="titulo-seccion">Así es nuestro almacén</h2>
+      <p class="intro">
+        Somos importadores y distribuidores. En las vitrinas y la estantería tenemos repuestos de distintas marcas:
+        en cada referencia te decimos de qué marca es la pieza y su número de parte.
+      </p>
+      <GaleriaAlmacen />
     </div>
   </section>
 
-  <section class="seccion">
+  <section class="seccion seccion--suave">
     <div class="contenedor visita">
       <div>
-        <h2>Visítanos en el Centro</h2>
+        <h2 class="titulo-seccion">Visítanos en el Centro</h2>
         <address>
           <strong>{negocio.nombre}</strong><br />
           {direccionCompleta}<br />
           Tel.: <a href={`tel:${negocio.telefono.e164}`}>{negocio.telefono.visible}</a>
         </address>
-        <p><a href="/contacto/">Horario y más formas de contacto</a></p>
+        <p class="pista">Busca el letrero blanco con letras doradas y el portón azul y blanco.</p>
+        <h3>Horario</h3>
+        <Horario />
+        <p class="mas"><a href="/contacto/">Más formas de contacto</a></p>
       </div>
       <Mapa />
     </div>
@@ -115,20 +128,36 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
 </script>
 
 <style>
-  .portada { background: linear-gradient(160deg, var(--azul) 0%, var(--azul-noche) 100%); color: var(--blanco); padding-block: 48px 56px; }
-  .portada h1 { color: var(--blanco); max-width: 20ch; }
-  .portada__sub { font-size: 1.15rem; max-width: 40ch; opacity: 0.95; }
+  .portada { position: relative; isolation: isolate; color: var(--blanco); padding-block: 56px 64px; overflow: hidden; }
+  .portada :global(.portada__foto) {
+    position: absolute; inset: 0; z-index: -2;
+    width: 100%; height: 100%; object-fit: cover; object-position: center 30%;
+  }
+  /* Velo azul sobre la foto para que el texto blanco se lea bien. */
+  .portada::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgb(15 42 92 / 0.82) 0%, rgb(15 42 92 / 0.55) 50%, rgb(15 42 92 / 0.88) 100%);
+  }
+  .portada__ubicacion {
+    display: inline-block; margin-bottom: 14px; padding: 4px 12px; border-radius: 999px;
+    background: var(--dorado); color: var(--azul-noche); font-weight: 700; font-size: 0.85rem;
+  }
+  .portada h1 { color: var(--blanco); max-width: 20ch; text-shadow: 0 2px 12px rgb(0 0 0 / 0.35); }
+  .portada__sub { font-size: 1.15rem; max-width: 40ch; }
   .portada__botones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
   .boton--claro { background: var(--blanco); color: var(--azul-noche); }
+  @media (min-width: 800px) { .portada { padding-block: 96px 104px; } }
 
   .buscador { display: grid; gap: 14px; }
   @media (min-width: 700px) { .buscador { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1000px) { .buscador { grid-template-columns: repeat(4, 1fr) auto; align-items: end; } }
 
-  .marcas { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 16px; }
-  .marcas li { padding: 6px 14px; border-radius: 999px; background: var(--blanco); border: 1px solid var(--borde); font-weight: 600; color: var(--azul-noche); }
+  .intro { max-width: 65ch; margin-bottom: 20px; }
 
-  .visita { display: grid; gap: 24px; }
+  .visita { display: grid; gap: 28px; }
   @media (min-width: 800px) { .visita { grid-template-columns: 1fr 1.5fr; align-items: start; } }
   address { font-style: normal; line-height: 1.8; margin-bottom: 12px; }
+  .pista { font-size: 0.95rem; color: var(--texto-suave); }
+  .visita h3 { margin-top: 20px; }
+  .mas { margin-top: 16px; }
 </style>

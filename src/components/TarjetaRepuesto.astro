@@ -32,10 +32,13 @@ const textoDisp = { disponible: 'Disponible', agotado: 'Agotado', consultar: 'Co
 
 <style>
   .tarjeta { background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra); }
-  .tarjeta__enlace { display: block; color: inherit; text-decoration: none; height: 100%; }
+  /* Celular: tarjeta horizontal (foto pequeña a la izquierda) para ver varias a la vez. */
+  .tarjeta__enlace { display: grid; grid-template-columns: 112px 1fr; color: inherit; text-decoration: none; height: 100%; }
+  @media (min-width: 560px) { .tarjeta__enlace { display: block; } }
   .tarjeta__enlace:hover h3 { color: var(--azul); text-decoration: underline; }
-  img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--fondo-suave); }
-  .tarjeta__cuerpo { padding: 14px; }
+  img { width: 100%; height: 100%; object-fit: cover; background: var(--fondo-suave); }
+  @media (min-width: 560px) { img { height: auto; aspect-ratio: 4 / 3; } }
+  .tarjeta__cuerpo { padding: 12px 14px; }
   h3 { font-size: 1rem; margin-bottom: 4px; }
   .tarjeta__ref { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 8px; }
   .tarjeta__pie { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0; flex-wrap: wrap; }

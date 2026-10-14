@@ -2,17 +2,19 @@
 import Base from '../layouts/Base.astro';
 import IconoWhatsApp from '../components/IconoWhatsApp.astro';
 import Mapa from '../components/Mapa.astro';
+import Foto from '../components/Foto.astro';
+import Horario from '../components/Horario.astro';
 import { jsonLdNegocio } from '../lib/seo';
 import { enlaceWhatsApp } from '../lib/whatsapp';
-import { negocio, direccionCompleta, horarioLegible } from '../config/negocio';
+import { negocio, direccionCompleta, fotosLocal } from '../config/negocio';
 ---
 <Base
-  titulo="Contacto y cómo llegar | Servimopar Bucaramanga"
-  descripcion={`Servimopar: ${negocio.direccion.calle}, Centro de Bucaramanga. Tel. ${negocio.telefono.visible}, WhatsApp ${negocio.whatsapp.visible}. Mapa, horario y cómo llegar al almacén.`}
+  titulo="Contacto, horario y cómo llegar | Servimopar Bucaramanga"
+  descripcion={`Servimopar: ${negocio.direccion.calle}, Centro de Bucaramanga. Lunes a viernes 8 a. m. a 5 p. m. y sábados 8 a. m. a 12 m. Tel. ${negocio.telefono.visible} y WhatsApp.`}
   jsonLd={[jsonLdNegocio(Astro.site)]}
 >
   <div class="contenedor seccion">
-    <h1>Contacto y cómo llegar</h1>
+    <h1 class="titulo-seccion">Contacto y cómo llegar</h1>
     <p>La forma más rápida es WhatsApp: envíanos el modelo, el año y el repuesto que necesitas.</p>
 
     <div class="contacto">
@@ -27,23 +29,23 @@ import { negocio, direccionCompleta, horarioLegible } from '../config/negocio';
           {direccionCompleta}, Colombia
         </address>
 
+        <h2>Horario</h2>
+        <Horario />
+
         <h2>Teléfono y correo</h2>
         <p>
           Teléfono: <a href={`tel:${negocio.telefono.e164}`}>{negocio.telefono.visible}</a><br />
           Correo: <a href={`mailto:${negocio.correo}`}>{negocio.correo}</a>
         </p>
-
-        <h2>Horario</h2>
-        {horarioLegible.length > 0 ? (
-          <ul class="horario">{horarioLegible.map((h) => <li>{h}</li>)}</ul>
-        ) : (
-          // TODO: horario pendiente de confirmar con el dueño (src/config/negocio.ts).
-          <p>Escríbenos por WhatsApp para confirmar el horario de atención.</p>
-        )}
       </div>
 
-      <div>
-        <h2 class="visualmente-oculto">Mapa</h2>
+      <div class="contacto__mapa">
+        <h2>Así se ve el almacén desde la calle</h2>
+        <figure>
+          <Foto src={fotosLocal.fachadaCerrada.src} alt={fotosLocal.fachadaCerrada.alt} sizes="(min-width: 800px) 600px, 100vw" />
+          <figcaption>Letrero blanco con letras doradas y portón azul y blanco, número 24-36.</figcaption>
+        </figure>
+        <h2>Mapa</h2>
         <Mapa />
       </div>
     </div>
@@ -53,7 +55,10 @@ import { negocio, direccionCompleta, horarioLegible } from '../config/negocio';
 <style>
   .contacto { display: grid; gap: 32px; margin-top: 24px; }
   @media (min-width: 800px) { .contacto { grid-template-columns: 1fr 1.5fr; align-items: start; } }
-  .contacto__datos h2 { font-size: 1.1rem; margin-top: 24px; }
+  .contacto h2 { font-size: 1.1rem; margin-top: 24px; }
+  .contacto__mapa h2:first-child { margin-top: 0; }
   address { font-style: normal; line-height: 1.8; }
-  .horario { padding-left: 1.2em; }
+  figure { margin: 0; }
+  figure :global(img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 40%; border-radius: var(--radio); }
+  figcaption { font-size: 0.9rem; color: var(--texto-suave); margin-top: 6px; }
 </style>

@@ -13,6 +13,7 @@
   --texto: #1e2430;
   --texto-suave: #4a5466;
   --borde: #d8dfeb;
+  --azul-porton: #2a7fc1;  /* barras del portón (motivo decorativo) */
   --whatsapp: #25d366;
   --whatsapp-oscuro: #128c4b;
 
@@ -120,3 +121,41 @@ input:focus-visible, select:focus-visible, a:focus-visible, button:focus-visible
 .etiqueta--disponible { background: #e3f5ea; color: #145c33; }
 .etiqueta--agotado { background: #fde8e8; color: var(--rojo-oscuro); }
 .etiqueta--consultar { background: var(--fondo-suave); color: var(--texto-suave); }
+
+/* ==========================================================================
+   Motivos tomados del almacén (decorativos, solo CSS: no pesan nada)
+   ========================================================================== */
+
+/* Barras azules y blancas del portón */
+.rayas-porton {
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--azul-porton) 0 14px, var(--blanco) 14px 24px);
+  border-block: 2px solid var(--azul-porton);
+}
+
+/* Baldosa azul con boquilla blanca, como la base de la fachada */
+.baldosa {
+  background-color: var(--azul);
+  background-image:
+    linear-gradient(90deg, rgb(255 255 255 / 0.55) 2px, transparent 2px),
+    linear-gradient(rgb(255 255 255 / 0.55) 2px, transparent 2px);
+  background-size: 34px 34px;
+}
+
+/* Piso de baldosa terracota del almacén */
+.piso {
+  height: 18px;
+  background-color: var(--terracota);
+  background-image:
+    linear-gradient(90deg, rgb(0 0 0 / 0.12) 1px, transparent 1px),
+    linear-gradient(rgb(0 0 0 / 0.12) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Título de sección con la franja dorada y roja del logo */
+.titulo-seccion::after {
+  content: '';
+  display: block;
+  width: 72px; height: 5px; margin-top: 10px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--dorado) 0 75%, var(--rojo) 75%);
+}

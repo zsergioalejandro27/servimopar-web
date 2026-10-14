@@ -39,6 +39,8 @@ Reglas de uso:
 - Números de parte: una fuente monoespaciada como **JetBrains Mono** o **IBM Plex Mono**
 
 ## Logo: instrucciones
+
+> **Decisión (13-oct-2026):** el logo provisional reproduce el letrero del almacén: "SERVIMOPAR" en letras doradas (`#E0A92E`) con sombra azul desplazada (`#1F4E9E`), como pintado a mano. El ícono cuadrado es la "S" dorada sobre azul con las barras blancas del portón. Se generan con `npm run marca` (`scripts/generar-imagenes-marca.mjs`). Falta convertir los textos a curvas para la versión final.
 **Concepto:** simple, legible de lejos y que recuerde al letrero del local.
 
 1. **Texto:** "SERVIMOPAR" en mayúsculas, Montserrat ExtraBold, azul `#1F4E9E`.
