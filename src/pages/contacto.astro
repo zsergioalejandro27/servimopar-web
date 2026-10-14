@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import IconoWhatsApp from '../components/IconoWhatsApp.astro';
+import Mapa from '../components/Mapa.astro';
+import { jsonLdNegocio } from '../lib/seo';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+import { negocio, direccionCompleta, horarioLegible } from '../config/negocio';
+---
+<Base
+  titulo="Contacto y cómo llegar | Servimopar Bucaramanga"
+  descripcion={`Servimopar: ${negocio.direccion.calle}, Centro de Bucaramanga. Tel. ${negocio.telefono.visible}, WhatsApp ${negocio.whatsapp.visible}. Mapa, horario y cómo llegar al almacén.`}
+  jsonLd={[jsonLdNegocio(Astro.site)]}
+>
+  <div class="contenedor seccion">
+    <h1>Contacto y cómo llegar</h1>
+    <p>La forma más rápida es WhatsApp: envíanos el modelo, el año y el repuesto que necesitas.</p>
+
+    <div class="contacto">
+      <div class="contacto__datos">
+        <a class="boton boton--whatsapp" href={enlaceWhatsApp()} target="_blank" rel="noopener">
+          <IconoWhatsApp /> WhatsApp {negocio.whatsapp.visible}
+        </a>
+
+        <h2>Dirección</h2>
+        <address>
+          <strong>{negocio.nombre}</strong><br />
+          {direccionCompleta}, Colombia
+        </address>
+
+        <h2>Teléfono y correo</h2>
+        <p>
+          Teléfono: <a href={`tel:${negocio.telefono.e164}`}>{negocio.telefono.visible}</a><br />
+          Correo: <a href={`mailto:${negocio.correo}`}>{negocio.correo}</a>
+        </p>
+
+        <h2>Horario</h2>
+        {horarioLegible.length > 0 ? (
+          <ul class="horario">{horarioLegible.map((h) => <li>{h}</li>)}</ul>
+        ) : (
+          // TODO: horario pendiente de confirmar con el dueño (src/config/negocio.ts).
+          <p>Escríbenos por WhatsApp para confirmar el horario de atención.</p>
+        )}
+      </div>
+
+      <div>
+        <h2 class="visualmente-oculto">Mapa</h2>
+        <Mapa />
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .contacto { display: grid; gap: 32px; margin-top: 24px; }
+  @media (min-width: 800px) { .contacto { grid-template-columns: 1fr 1.5fr; align-items: start; } }
+  .contacto__datos h2 { font-size: 1.1rem; margin-top: 24px; }
+  address { font-style: normal; line-height: 1.8; }
+  .horario { padding-left: 1.2em; }
+</style>

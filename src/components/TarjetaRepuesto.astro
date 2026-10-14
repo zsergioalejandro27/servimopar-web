@@ -1,0 +1,42 @@
+---
+import {
+  type Repuesto, tituloRepuesto, precioLegible, disponibilidad, fotoUrl,
+} from '../lib/inventario';
+
+interface Props {
+  repuesto: Repuesto;
+}
+const { repuesto: r } = Astro.props;
+const titulo = tituloRepuesto(r);
+const precio = precioLegible(r);
+const disp = disponibilidad(r);
+const textoDisp = { disponible: 'Disponible', agotado: 'Agotado', consultar: 'Consultar disponibilidad' }[disp];
+---
+<article class="tarjeta">
+  <a href={`/repuestos/${r.slug}/`} class="tarjeta__enlace">
+    <img
+      src={fotoUrl(r)}
+      alt={r.foto ? titulo : ''}
+      width="400" height="300" loading="lazy" decoding="async"
+    />
+    <div class="tarjeta__cuerpo">
+      <h3>{titulo}</h3>
+      {r.numeroParte && <p class="tarjeta__ref">Ref. <span class="mono">{r.numeroParte}</span></p>}
+      <p class="tarjeta__pie">
+        <span class={`etiqueta etiqueta--${disp}`}>{textoDisp}</span>
+        <strong>{precio ?? 'Cotizar'}</strong>
+      </p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .tarjeta { background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra); }
+  .tarjeta__enlace { display: block; color: inherit; text-decoration: none; height: 100%; }
+  .tarjeta__enlace:hover h3 { color: var(--azul); text-decoration: underline; }
+  img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--fondo-suave); }
+  .tarjeta__cuerpo { padding: 14px; }
+  h3 { font-size: 1rem; margin-bottom: 4px; }
+  .tarjeta__ref { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 8px; }
+  .tarjeta__pie { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0; flex-wrap: wrap; }
+</style>

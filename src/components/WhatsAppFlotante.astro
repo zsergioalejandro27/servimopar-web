@@ -1,0 +1,32 @@
+---
+import IconoWhatsApp from './IconoWhatsApp.astro';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+
+interface Props {
+  mensaje?: string;
+}
+const { mensaje } = Astro.props;
+---
+<a class="wa-flotante" href={enlaceWhatsApp(mensaje)} target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <IconoWhatsApp />
+</a>
+
+<style>
+  .wa-flotante {
+    position: fixed;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 50;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--whatsapp);
+    color: var(--blanco);
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+    transition: transform 0.15s;
+  }
+  .wa-flotante:hover { transform: scale(1.06); }
+  .wa-flotante :global(svg) { width: 34px; height: 34px; }
+</style>

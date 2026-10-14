@@ -107,3 +107,16 @@ input:focus-visible, select:focus-visible, a:focus-visible, button:focus-visible
   border-left: 4px solid var(--dorado);
   background: #fff8e6; padding: 10px 14px; border-radius: 6px; font-size: 0.95rem;
 }
+
+/* Al recibir foco con teclado, el enlace "Saltar al contenido" se hace visible. */
+.visualmente-oculto:focus {
+  position: fixed; top: 8px; left: 8px; z-index: 100;
+  width: auto; height: auto; clip: auto; padding: 8px 12px;
+  background: var(--blanco); color: var(--azul); border-radius: 6px;
+}
+
+/* Etiquetas de disponibilidad ---------------------------------------------------- */
+.etiqueta { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+.etiqueta--disponible { background: #e3f5ea; color: #145c33; }
+.etiqueta--agotado { background: #fde8e8; color: var(--rojo-oscuro); }
+.etiqueta--consultar { background: var(--fondo-suave); color: var(--texto-suave); }

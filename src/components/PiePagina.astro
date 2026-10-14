@@ -1,0 +1,46 @@
+---
+import Logo from './Logo.astro';
+import { negocio, direccionCompleta } from '../config/negocio';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+---
+<footer class="pie">
+  <div class="contenedor pie__rejilla">
+    <div>
+      <div class="pie__logo"><Logo variante="blanco" /></div>
+      <p>{negocio.descripcion}</p>
+    </div>
+    <div>
+      <h2 class="pie__titulo">Visítanos</h2>
+      <!-- NAP en texto plano: debe coincidir exactamente con el Perfil de Empresa en Google. -->
+      <address>
+        <strong>{negocio.nombre}</strong><br />
+        {direccionCompleta}<br />
+        Tel.: <a href={`tel:${negocio.telefono.e164}`}>{negocio.telefono.visible}</a><br />
+        WhatsApp: <a href={enlaceWhatsApp()} target="_blank" rel="noopener">{negocio.whatsapp.visible}</a><br />
+        <a href={`mailto:${negocio.correo}`}>{negocio.correo}</a>
+      </address>
+    </div>
+    <div>
+      <h2 class="pie__titulo">Marcas que atendemos</h2>
+      <p>{negocio.marcas.join(' · ')}</p>
+    </div>
+  </div>
+  <div class="contenedor pie__legal">
+    <p>
+      Chevrolet, Dodge, Ram, Jeep, Mopar y las demás marcas mencionadas pertenecen a sus respectivos dueños.
+      Sus nombres se usan solo para indicar con qué vehículos es compatible cada repuesto.
+    </p>
+    <p>© {new Date().getFullYear()} {negocio.nombreLegal}</p>
+  </div>
+</footer>
+
+<style>
+  .pie { background: var(--azul-noche); color: #dfe6f3; padding-top: 40px; padding-bottom: 96px; /* espacio para el botón flotante */ }
+  .pie a { color: var(--blanco); }
+  .pie__rejilla { display: grid; gap: 24px; }
+  @media (min-width: 800px) { .pie__rejilla { grid-template-columns: 1.3fr 1fr 1fr; } }
+  .pie__logo { width: 200px; margin-bottom: 12px; }
+  .pie__titulo { color: var(--blanco); font-size: 1rem; margin-bottom: 8px; }
+  address { font-style: normal; line-height: 1.8; }
+  .pie__legal { margin-top: 24px; padding-top: 16px; border-top: 1px solid rgb(255 255 255 / 0.15); font-size: 0.85rem; opacity: 0.85; }
+</style>

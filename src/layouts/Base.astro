@@ -1,0 +1,73 @@
+---
+// Layout base: todo lo que va en <head> para SEO vive aquí, así ninguna página
+// puede olvidar el canonical, el Open Graph o el idioma.
+import '../styles/global.css';
+import Encabezado from '../components/Encabezado.astro';
+import PiePagina from '../components/PiePagina.astro';
+import WhatsAppFlotante from '../components/WhatsAppFlotante.astro';
+import { absoluta } from '../lib/seo';
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+  imagenOg?: string; // ruta dentro del sitio, p. ej. /fotos/repuestos/x.jpg (PNG/JPG, no SVG)
+  tipoOg?: 'website' | 'product';
+  noindex?: boolean;
+  jsonLd?: object[];
+  mensajeWhatsApp?: string;
+}
+
+const {
+  titulo, descripcion, imagenOg = '/og-servimopar.png', tipoOg = 'website',
+  noindex = false, jsonLd = [], mensajeWhatsApp,
+} = Astro.props;
+
+// Canonical siempre con el dominio público (Astro.site), nunca con localhost.
+const canonical = absoluta(Astro.url.pathname, Astro.site);
+const ogImagen = absoluta(imagenOg, Astro.site);
+---
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph: así se ve el enlace al compartirlo por WhatsApp o Facebook -->
+    <meta property="og:type" content={tipoOg} />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="Servimopar" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImagen} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#1F4E9E" />
+
+    <!-- Google Fonts: preconnect adelanta la conexión; display=swap muestra el texto
+         de inmediato con una fuente del sistema y cambia cuando llega la definitiva. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;800&display=swap"
+    />
+
+    {jsonLd.map((datos) => <script type="application/ld+json" set:html={JSON.stringify(datos)} />)}
+  </head>
+  <body>
+    <a class="visualmente-oculto" href="#contenido">Saltar al contenido</a>
+    <Encabezado />
+    <main id="contenido">
+      <slot />
+    </main>
+    <PiePagina />
+    <WhatsAppFlotante mensaje={mensajeWhatsApp} />
+  </body>
+</html>

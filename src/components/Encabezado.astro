@@ -1,0 +1,45 @@
+---
+import Logo from './Logo.astro';
+
+const ruta = Astro.url.pathname;
+// TODO (etapas 3 y 4): agregar Repuestos, Dodge Journey y Nosotros cuando existan.
+const enlaces = [
+  { href: '/', texto: 'Inicio' },
+  { href: '/contacto/', texto: 'Contacto' },
+];
+---
+<header class="encabezado">
+  <div class="contenedor encabezado__fila">
+    <a href="/" class="encabezado__logo" aria-label="Servimopar, ir al inicio">
+      <Logo variante="blanco" />
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        {enlaces.map((e) => (
+          <li>
+            <a href={e.href} aria-current={ruta === e.href ? 'page' : undefined}>{e.texto}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .encabezado { background: var(--azul); color: var(--blanco); }
+  .encabezado__fila {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    min-height: 64px;
+  }
+  .encabezado__logo { display: block; width: 150px; flex: none; }
+  .encabezado__logo :global(svg) { display: block; width: 100%; height: auto; }
+  ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  nav a {
+    display: block; padding: 10px 10px;
+    color: var(--blanco); text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    border-radius: 6px;
+  }
+  nav a:hover { background: rgb(255 255 255 / 0.12); }
+  nav a[aria-current='page'] { box-shadow: inset 0 -3px 0 var(--dorado); }
+  @media (min-width: 700px) { .encabezado__logo { width: 200px; } }
+</style>
