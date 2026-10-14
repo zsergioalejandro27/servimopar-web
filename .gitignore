@@ -15,3 +15,7 @@ desktop.ini
 # Generados por scripts/optimizar-fotos.mjs (se recrean en cada dev/build)
 public/fotos/**/webp/
 src/generado/
+
+# Privado: no se publica en el repositorio público
+PLAN-POSICIONAMIENTO.md
+referencias/
