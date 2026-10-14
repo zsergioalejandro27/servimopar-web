@@ -50,8 +50,7 @@ const imagenOg = r.foto && !r.foto.endsWith('.svg') ? fotoUrl(r) : undefined;
 >
   <div class="contenedor">
     <nav class="migas" aria-label="Ruta de navegación">
-      <a href="/">Inicio</a> <span aria-hidden="true">›</span>
-      <span>{r.nombre}</span>
+      <a href="/">Inicio</a>{' '}<span aria-hidden="true">›</span>{' '}<span>{r.nombre}</span>
     </nav>
 
     {r.esEjemplo && (
