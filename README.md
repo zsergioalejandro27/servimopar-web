@@ -53,7 +53,7 @@ El diseño sale del propio local. El logo reproduce el letrero pintado a mano, e
 **Requisitos:** [Node.js](https://nodejs.org) 22.12 o superior (se recomienda la versión LTS) y Git.
 
 ```bash
-git clone https://github.com/<tu-usuario>/servimopar-web.git
+git clone https://github.com/zsergioalejandro27/servimopar-web.git
 cd servimopar-web
 npm install
 npm run dev
