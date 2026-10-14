@@ -4,8 +4,8 @@
 
 export interface FranjaHorario {
   dias: ('Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday')[];
-  abre: string; // "08:00"
-  cierra: string; // "18:00"
+  abre: string; // '08:00'
+  cierra: string; // '18:00'
 }
 
 export const negocio = {
@@ -27,26 +27,59 @@ export const negocio = {
   correo: 'servimopar@gmail.com',
   marcas: ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'Mopar', 'LUV', 'Kodiak', 'NPR', 'NKR'],
 
-  // TODO: HORARIO PENDIENTE (preguntar al dueño). Ejemplo del formato:
-  // [{ dias: ['Monday','Tuesday','Wednesday','Thursday','Friday'], abre: '08:00', cierra: '18:00' }]
-  horario: [] as FranjaHorario[],
+  // Confirmado por el dueño (13-oct-2026). TODO: preguntar si abren los festivos.
+  horario: [
+    { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], abre: '08:00', cierra: '17:00' },
+    { dias: ['Saturday'], abre: '08:00', cierra: '12:00' },
+  ] as FranjaHorario[],
 
-  // TODO: coordenadas exactas del local (copiarlas del Perfil de Empresa en Google Maps).
-  geo: undefined as { lat: number; lng: number } | undefined,
+  // Coordenadas del pin en Google Maps.
+  geo: { lat: 7.124075, lng: -73.128957 } as { lat: number; lng: number } | undefined,
 };
 
 export const direccionCompleta = `${negocio.direccion.calle}, ${negocio.direccion.barrio}, ${negocio.direccion.ciudad}, ${negocio.direccion.departamento}`;
 
-const consultaMapa = encodeURIComponent('Servimopar, Carrera 15 #24-36, Bucaramanga, Santander, Colombia');
-// Embed de Google Maps sin API key (gratis).
-// TODO: reemplazar por el embed del Perfil de Empresa cuando esté verificado.
-export const mapaEmbed = `https://www.google.com/maps?q=${consultaMapa}&output=embed`;
-export const mapaComoLlegar = `https://www.google.com/maps/dir/?api=1&destination=${consultaMapa}`;
+// Embed de Google Maps sin API key (gratis), centrado en las coordenadas exactas del local.
+// TODO: cuando el Perfil de Empresa esté verificado, usar su enlace para que el pin muestre la ficha.
+const coordenadas = `${negocio.geo!.lat},${negocio.geo!.lng}`;
+export const mapaEmbed = `https://www.google.com/maps?q=${coordenadas}&z=18&output=embed`;
+export const mapaComoLlegar = `https://www.google.com/maps/dir/?api=1&destination=${coordenadas}`;
 
 const diasES: Record<string, string> = {
   Monday: 'Lunes', Tuesday: 'Martes', Wednesday: 'Miércoles', Thursday: 'Jueves',
   Friday: 'Viernes', Saturday: 'Sábado', Sunday: 'Domingo',
 };
-export const horarioLegible = negocio.horario.map(
-  (h) => `${h.dias.map((d) => diasES[d]).join(', ')}: ${h.abre} – ${h.cierra}`,
-);
+const hora = (h: string) => {
+  const [hh, mm] = h.split(':').map(Number);
+  const sufijo = hh < 12 ? 'a. m.' : 'p. m.';
+  const h12 = hh % 12 === 0 ? 12 : hh % 12;
+  return mm ? `${h12}:${String(mm).padStart(2, '0')} ${sufijo}` : `${h12} ${sufijo}`;
+};
+const rangoDias = (dias: string[]) =>
+  dias.length > 2 ? `${diasES[dias[0]]} a ${diasES[dias.at(-1)!]}` : dias.map((d) => diasES[d]).join(' y ');
+
+/** [{ dias: 'Lunes a Viernes', horas: '8 a. m. – 5 p. m.' }, ...] */
+export const horarioLegible = negocio.horario.map((h) => ({
+  dias: rangoDias(h.dias),
+  horas: `${hora(h.abre)} – ${hora(h.cierra)}`,
+}));
+
+/** Fotos reales del local (originales en public/fotos/local/). */
+export const fotosLocal = {
+  fachadaCerrada: {
+    src: '/fotos/local/fachada-servimopar-porton-cerrado.jpg',
+    alt: 'Fachada de Servimopar en la Carrera 15 No. 24-36, con el letrero del almacén y el portón azul y blanco',
+  },
+  fachadaAbierta: {
+    src: '/fotos/local/fachada-servimopar-almacen-abierto.jpg',
+    alt: 'Almacén Servimopar abierto, con las vitrinas de repuestos a la entrada, en el Centro de Bucaramanga',
+  },
+  entrada: {
+    src: '/fotos/local/entrada-vitrinas-servimopar.jpg',
+    alt: 'Entrada de Servimopar: vitrinas con repuestos en caja y estantería azul al fondo',
+  },
+  interior: {
+    src: '/fotos/local/interior-estanteria-vitrinas-servimopar.jpg',
+    alt: 'Interior de Servimopar: estantes llenos de repuestos, mezzanine y vitrina con soportes de motor',
+  },
+};

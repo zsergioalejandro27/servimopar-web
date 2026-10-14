@@ -11,3 +11,7 @@ dist/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Generados por scripts/optimizar-fotos.mjs (se recrean en cada dev/build)
+public/fotos/**/webp/
+src/generado/

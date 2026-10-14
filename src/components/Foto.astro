@@ -1,0 +1,31 @@
+---
+// <img> responsive: el navegador elige el WebP del ancho justo según la
+// pantalla (srcset + sizes). Si la foto no tiene variantes, usa el original.
+import indice from '../generado/fotos.json';
+
+interface Props {
+  src: string; // ruta del original, p. ej. /fotos/local/fachada.jpg
+  alt: string;
+  sizes?: string;
+  prioridad?: boolean; // true solo para la imagen principal visible al cargar (LCP)
+  class?: string;
+}
+const { src, alt, sizes = '100vw', prioridad = false, class: clase } = Astro.props;
+
+type Entrada = { ancho: number; alto: number; variantes: { ancho: number; src: string }[] };
+const datos = (indice as Record<string, Entrada>)[src];
+const srcset = datos?.variantes.map((v) => `${v.src} ${v.ancho}w`).join(', ');
+const porDefecto = datos?.variantes.find((v) => v.ancho >= 960)?.src ?? datos?.variantes.at(-1)?.src ?? src;
+---
+<img
+  src={porDefecto}
+  srcset={srcset}
+  sizes={srcset ? sizes : undefined}
+  alt={alt}
+  width={datos?.ancho}
+  height={datos?.alto}
+  loading={prioridad ? 'eager' : 'lazy'}
+  fetchpriority={prioridad ? 'high' : undefined}
+  decoding="async"
+  class={clase}
+/>

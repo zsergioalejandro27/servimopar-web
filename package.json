@@ -4,9 +4,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/optimizar-fotos.mjs",
     "dev": "astro dev",
+    "prebuild": "node scripts/optimizar-fotos.mjs",
     "build": "astro build",
     "preview": "astro preview",
+    "fotos": "node scripts/optimizar-fotos.mjs",
+    "marca": "node scripts/generar-imagenes-marca.mjs",
     "astro": "astro"
   },
   "dependencies": {
