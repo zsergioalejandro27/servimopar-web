@@ -2,10 +2,10 @@
 import { horarioLegible } from '../config/negocio';
 ---
 <dl class="horario">
-  {horarioLegible.map((h) => (
+  {horarioLegible.map((g) => (
     <div>
-      <dt>{h.dias}</dt>
-      <dd>{h.horas}</dd>
+      <dt>{g.dias}</dt>
+      <dd>{g.franjas.map((f) => <span>{f}</span>)}</dd>
     </div>
   ))}
 </dl>
@@ -14,5 +14,6 @@ import { horarioLegible } from '../config/negocio';
   .horario { margin: 0; }
   .horario div { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px dashed currentColor; border-color: rgb(127 127 127 / 0.35); }
   dt { font-weight: 600; }
-  dd { margin: 0; white-space: nowrap; }
+  /* Una franja por línea: así el horario partido se lee claro en celular. */
+  dd { margin: 0; display: flex; flex-direction: column; align-items: flex-end; white-space: nowrap; }
 </style>

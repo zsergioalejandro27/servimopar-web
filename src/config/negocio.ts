@@ -27,9 +27,11 @@ export const negocio = {
   correo: 'servimopar@gmail.com',
   marcas: ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'Mopar', 'LUV', 'Kodiak', 'NPR', 'NKR'],
 
-  // Confirmado por el dueño (13-oct-2026). TODO: preguntar si abren los festivos.
+  // Confirmado por el dueño (14-oct-2026). TODO: preguntar si abren los festivos.
+  // Horario partido = dos franjas con los mismos días (así lo entiende schema.org).
   horario: [
-    { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], abre: '08:00', cierra: '17:00' },
+    { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], abre: '08:00', cierra: '12:00' },
+    { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], abre: '14:00', cierra: '17:00' },
     { dias: ['Saturday'], abre: '08:00', cierra: '12:00' },
   ] as FranjaHorario[],
 
@@ -49,8 +51,10 @@ const diasES: Record<string, string> = {
   Monday: 'Lunes', Tuesday: 'Martes', Wednesday: 'Miércoles', Thursday: 'Jueves',
   Friday: 'Viernes', Saturday: 'Sábado', Sunday: 'Domingo',
 };
+/** "8 a. m.", "2 p. m."; las 12:00 en punto se escriben "12 m." (uso colombiano). */
 const hora = (h: string) => {
   const [hh, mm] = h.split(':').map(Number);
+  if (hh === 12 && !mm) return '12 m.';
   const sufijo = hh < 12 ? 'a. m.' : 'p. m.';
   const h12 = hh % 12 === 0 ? 12 : hh % 12;
   return mm ? `${h12}:${String(mm).padStart(2, '0')} ${sufijo}` : `${h12} ${sufijo}`;
@@ -58,11 +62,21 @@ const hora = (h: string) => {
 const rangoDias = (dias: string[]) =>
   dias.length > 2 ? `${diasES[dias[0]]} a ${diasES[dias.at(-1)!]}` : dias.map((d) => diasES[d]).join(' y ');
 
-/** [{ dias: 'Lunes a Viernes', horas: '8 a. m. – 5 p. m.' }, ...] */
-export const horarioLegible = negocio.horario.map((h) => ({
-  dias: rangoDias(h.dias),
-  horas: `${hora(h.abre)} – ${hora(h.cierra)}`,
-}));
+/**
+ * Agrupa las franjas que tienen los mismos días:
+ * [{ dias: 'Lunes a Viernes', franjas: ['8 a. m. – 12 m.', '2 p. m. – 5 p. m.'] }, ...]
+ */
+export const horarioLegible = negocio.horario.reduce<{ dias: string; franjas: string[] }[]>((grupos, h) => {
+  const dias = rangoDias(h.dias);
+  const franja = `${hora(h.abre)} – ${hora(h.cierra)}`;
+  const grupo = grupos.find((g) => g.dias === dias);
+  if (grupo) grupo.franjas.push(franja);
+  else grupos.push({ dias, franjas: [franja] });
+  return grupos;
+}, []);
+
+/** Resumen en una línea: "Lunes a Viernes 8 a. m. – 12 m. y 2 p. m. – 5 p. m.; Sábado 8 a. m. – 12 m." */
+export const horarioEnUnaLinea = horarioLegible.map((g) => `${g.dias} ${g.franjas.join(' y ')}`).join('; ');
 
 /** Fotos reales del local (originales en public/fotos/local/). */
 export const fotosLocal = {
