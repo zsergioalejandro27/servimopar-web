@@ -1,5 +1,5 @@
 ---
-import { horarioLegible } from '../config/negocio';
+import { horarioLegible, negocio } from '../config/negocio';
 ---
 <dl class="horario">
   {horarioLegible.map((g) => (
@@ -8,6 +8,10 @@ import { horarioLegible } from '../config/negocio';
       <dd>{g.franjas.map((f) => <span>{f}</span>)}</dd>
     </div>
   ))}
+  <div>
+    <dt>{negocio.cerrado}</dt>
+    <dd>Cerrado</dd>
+  </div>
 </dl>
 
 <style>

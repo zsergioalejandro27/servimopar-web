@@ -27,13 +27,17 @@ export const negocio = {
   correo: 'servimopar@gmail.com',
   marcas: ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'Mopar', 'LUV', 'Kodiak', 'NPR', 'NKR'],
 
-  // Confirmado por el dueño (14-oct-2026). TODO: preguntar si abren los festivos.
-  // Horario partido = dos franjas con los mismos días (así lo entiende schema.org).
+  // Confirmado por el dueño (14-oct-2026). Horario partido = dos franjas con
+  // los mismos días (así lo entiende schema.org).
   horario: [
     { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], abre: '08:00', cierra: '12:00' },
     { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], abre: '14:00', cierra: '17:00' },
     { dias: ['Saturday'], abre: '08:00', cierra: '12:00' },
   ] as FranjaHorario[],
+  // Días sin atención (confirmado por el dueño, 14-oct-2026). Los festivos cambian de
+  // fecha cada año en Colombia: se marcan también en el Perfil de Empresa de Google
+  // como "horario especial", que es lo que Google muestra en Maps.
+  cerrado: 'Domingos y festivos',
 
   // Coordenadas del pin en Google Maps.
   geo: { lat: 7.124075, lng: -73.128957 } as { lat: number; lng: number } | undefined,
