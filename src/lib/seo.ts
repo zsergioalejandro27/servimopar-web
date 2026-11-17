@@ -3,13 +3,13 @@
 // formato que entiende sin ambigüedad, qué es la página (un negocio, un producto).
 import { negocio, fotosLocal } from '../config/negocio';
 import {
-  type Repuesto, tituloRepuesto, disponibilidad, rangoAnios, vehiculo,
+  type Repuesto, tituloRepuesto, rangoAnios, vehiculo,
 } from './inventario';
 
 /** URL absoluta a partir de una ruta del sitio. */
 export const absoluta = (ruta: string, site: URL | undefined) => new URL(ruta, site).href;
 
-/** Identificador estable del negocio: permite que Product.offers.seller apunte al mismo nodo. */
+/** Identificador estable del negocio: otras páginas o datos pueden referirse a él con este @id. */
 export const idNegocio = (site: URL | undefined) => absoluta('/#negocio', site);
 
 export function jsonLdNegocio(site: URL | undefined) {
@@ -50,13 +50,10 @@ export function jsonLdNegocio(site: URL | undefined) {
   };
 }
 
-const disponibilidadSchema = {
-  disponible: 'https://schema.org/InStock',
-  agotado: 'https://schema.org/OutOfStock',
-} as const;
-
+// Sin precio publicado no hay `offers`. Google entiende igual qué es la página y
+// con qué vehículo es compatible, pero no muestra el precio en el resultado
+// (Search Console avisará "falta offers": es esperado, no es un error del sitio).
 export function jsonLdProducto(r: Repuesto, site: URL | undefined, urlPagina: string) {
-  const disp = disponibilidad(r);
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -78,17 +75,6 @@ export function jsonLdProducto(r: Repuesto, site: URL | undefined, urlPagina: st
         ...(r.vehiculoModelo && { model: r.vehiculoModelo }),
       },
     }),
-    // Offer solo con precio real; sin precio, la página dice "cotizar".
-    ...(r.precioCop && {
-      offers: {
-        '@type': 'Offer',
-        url: urlPagina,
-        price: r.precioCop,
-        priceCurrency: 'COP',
-        ...(disp !== 'consultar' && { availability: disponibilidadSchema[disp] }),
-        seller: { '@id': idNegocio(site) },
-      },
-    }),
   };
 }
 
@@ -96,14 +82,13 @@ export function jsonLdProducto(r: Repuesto, site: URL | undefined, urlPagina: st
  * Meta description única por repuesto, apuntando a 150-160 caracteres
  * (lo que Google suele mostrar completo en el resultado).
  */
-export function descripcionRepuesto(r: Repuesto, precio?: string): string {
+export function descripcionRepuesto(r: Repuesto): string {
   const partes = [
     tituloRepuesto(r),
     r.marcaRepuesto && ` marca ${r.marcaRepuesto}`,
     r.numeroParte && `, ref. ${r.numeroParte}`,
     '. ',
-    precio ? `Precio ${precio}. ` : '',
-    'Cotiza por WhatsApp en Servimopar',
+    'Cotiza precio y disponibilidad por WhatsApp en Servimopar',
   ].filter(Boolean).join('');
   const conDireccion = `${partes}, ${negocio.direccion.calle}, Bucaramanga.`;
   if (conDireccion.length <= 160) return conDireccion;

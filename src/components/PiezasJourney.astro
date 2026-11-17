@@ -1,0 +1,47 @@
+---
+// Accesos rápidos para cotizar piezas de la Dodge Journey por WhatsApp.
+// La lista sale de las búsquedas que se quieren posicionar (PLAN-POSICIONAMIENTO).
+// El texto dice "pregúntanos por", no "tenemos": la disponibilidad la confirma el almacén.
+import IconoWhatsApp from './IconoWhatsApp.astro';
+import { enlaceWhatsApp } from '../lib/whatsapp';
+
+const piezas = [
+  'Soporte de motor', 'Alternador', 'Bomba de agua', 'Pastillas de freno',
+  'Rótulas', 'Correa', 'Filtros', 'Sensores',
+];
+const mensaje = (pieza: string) =>
+  `Hola, quiero cotizar precio y disponibilidad de: ${pieza.toLowerCase()} para Dodge Journey. Mi Journey es del año: `;
+---
+<ul class="piezas">
+  {piezas.map((p) => (
+    <li>
+      <a href={enlaceWhatsApp(mensaje(p))} target="_blank" rel="noopener">
+        <span>{p}</span>
+        <IconoWhatsApp />
+      </a>
+    </li>
+  ))}
+  <li>
+    <a href={enlaceWhatsApp('Hola, busco un repuesto para mi Dodge Journey. Año: ')} target="_blank" rel="noopener" class="otra">
+      <span>Otra pieza</span>
+      <IconoWhatsApp />
+    </a>
+  </li>
+</ul>
+
+<style>
+  .piezas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; list-style: none; margin: 0; padding: 0; }
+  @media (min-width: 760px) { .piezas { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1000px) { .piezas { grid-template-columns: repeat(5, 1fr); } }
+  a {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    min-height: 52px; padding: 10px 14px;
+    background: var(--blanco); border: 1px solid var(--borde); border-left: 5px solid var(--terracota);
+    border-radius: var(--radio); box-shadow: var(--sombra);
+    color: var(--azul-noche); font-weight: 700; text-decoration: none; line-height: 1.25;
+  }
+  a:hover { border-color: var(--whatsapp-oscuro); }
+  a :global(svg) { width: 22px; height: 22px; flex: none; color: var(--whatsapp-oscuro); }
+  .otra { background: var(--azul); color: var(--blanco); border-color: var(--azul); }
+  .otra :global(svg) { color: var(--blanco); }
+</style>

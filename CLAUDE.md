@@ -1,4 +1,4 @@
-# Proyecto: sitio web de Servimopar (repuestos Chevrolet, Dodge, Ram y Jeep, Bucaramanga)
+# Proyecto: sitio web de Servimopar (repuestos Dodge Journey, Chevrolet y Jeep, Bucaramanga)
 
 Este archivo es el brief para Claude Code. Léelo completo antes de hacer cambios. La marca está en `MARCA.md` y el plan de posicionamiento en `PLAN-POSICIONAMIENTO.md`.
 
@@ -16,14 +16,15 @@ Que quien busque en Google "repuestos Dodge Journey" (y variantes por pieza y a�
 - Nombre: Servimopar & Cía Ltda. (nombre comercial: Servimopar)
 - Dirección: Cra. 15 No. 24-36, Centro, Bucaramanga, Santander, Colombia
 - Teléfono: 607 683 5322
-- WhatsApp: 314 421 3447 (confirmar con el dueño cuál usar como principal; el secundario es 310 302 4336)
+- WhatsApp: 310 302 4336 (confirmado por el dueño)
 - Correo: servimopar@gmail.com
 - Horario: PENDIENTE (preguntar al dueño)
-- Marcas: Chevrolet, Dodge, Ram, Jeep, Mopar, LUV, Kodiak, NPR, NKR
+- Marcas que se anuncian: Dodge (énfasis en Dodge Journey), Chevrolet, Jeep, LUV, Kodiak, NPR, NKR. El dueño pidió NO mencionar Ram ni Mopar.
+- Dominio: servimopar.synic.com.co
 
 ## Estructura de la web
 1. `/` Inicio: propuesta de valor, buscador por marca/modelo/año, repuestos destacados, mapa, botón de WhatsApp.
-2. `/repuestos/` Catálogo con filtros por marca, modelo y categoría.
+2. Repuestos: solo algunos destacados (en el inicio y en `/dodge-journey/`), sin catálogo completo con filtros.
 3. `/repuestos/[slug]/` Una página por repuesto.
 4. `/dodge-journey/` Página especial pensada para posicionar "repuestos Dodge Journey": texto útil, lista de piezas disponibles, preguntas frecuentes.
 5. `/nosotros/` Historia, el local con fotos reales, importadores y distribuidores.
@@ -33,9 +34,9 @@ Que quien busque en Google "repuestos Dodge Journey" (y variantes por pieza y a�
 - `<title>` tipo: "Soporte de motor Dodge Journey 2009-2020 | Servimopar Bucaramanga"
 - Meta description única (150-160 caracteres)
 - Un solo `<h1>` con nombre de la pieza + modelo + años
-- Nombre, marca de la pieza, número de parte, compatibilidad (modelo y años), precio (o "cotizar"), disponibilidad, foto
-- Botón "Cotizar por WhatsApp" con mensaje prellenado, por ejemplo: `https://wa.me/573144213447?text=Hola, quiero cotizar: {nombre} {modelo} {año} (ref. {numero_parte})`
-- Datos estructurados JSON-LD tipo `Product` con `Offer` (si hay precio) y marca
+- Nombre, marca de la pieza, número de parte, compatibilidad (modelo y años), foto. **Sin precio ni disponibilidad** (decisión del dueño).
+- Botón "Cotizar precio y disponibilidad" con mensaje prellenado, por ejemplo: `https://wa.me/573103024336?text=Hola, quiero cotizar precio y disponibilidad de: {nombre} {modelo} {año} (ref. {numero_parte})`
+- Datos estructurados JSON-LD tipo `Product` con marca y vehículo compatible (sin `Offer`)
 - Texto alt descriptivo en las fotos
 - Enlaces internos a otros repuestos del mismo modelo
 
@@ -53,14 +54,14 @@ Que quien busque en Google "repuestos Dodge Journey" (y variantes por pieza y a�
 Seguir `MARCA.md` (paleta azul/rojo/dorado, Montserrat + Inter). Mobile first, porque la mayoría busca desde el celular. Botón flotante de WhatsApp siempre visible.
 
 ## Formato del inventario (`data/inventario.csv`)
-Columnas: `slug,nombre,categoria,marca_repuesto,numero_parte,vehiculo_marca,vehiculo_modelo,anio_desde,anio_hasta,precio_cop,stock,foto,descripcion`
+Columnas: `slug,nombre,categoria,marca_repuesto,numero_parte,vehiculo_marca,vehiculo_modelo,anio_desde,anio_hasta,foto,descripcion`
 Si falta un dato, dejarlo vacío y que la página lo maneje sin romperse. Empezar con 20-30 repuestos de Dodge Journey. Crear un CSV de ejemplo con datos claramente falsos marcados "EJEMPLO" para probar, y no publicarlos.
 
 ## Reglas de trabajo
 - Trabajar por etapas pequeñas y mostrar cómo ver el avance (`npm run dev`).
 - Antes de publicar, correr `npm run build` y corregir errores.
 - No inventar datos del negocio (horario, precios, referencias). Si falta algo, dejar un `TODO` y avisarme.
-- No usar logos de Chevrolet, Dodge, Ram, Jeep ni Mopar como si fueran propios.
+- No usar logos de marcas de vehículos (Chevrolet, Dodge, Jeep, etc.) como si fueran propios.
 - No decir "repuestos originales" en general; usar "original" solo donde el dato del inventario lo indique.
 - Hacer commits claros en español.
 - Explicarme como si fuera mi primera vez con cada herramienta (Git, Node, Cloudflare).
@@ -71,9 +72,9 @@ Si falta un dato, dejarlo vacío y que la página lo maneje sin romperse. Empeza
 ## Orden sugerido de etapas
 1. Proyecto base + diseño + inicio
 2. Plantilla de repuesto + lectura del CSV
-3. Catálogo con filtros + página `/dodge-journey/`
+3. Repuestos destacados + página `/dodge-journey/`
 4. Contacto, nosotros, mapa
 5. SEO técnico (sitemap, robots, JSON-LD, canonical, Open Graph)
 6. Revisión de velocidad y celular
 7. Publicar en GitHub + Cloudflare Pages
-8. Conectar dominio
+8. Conectar el subdominio servimopar.synic.com.co

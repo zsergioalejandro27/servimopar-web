@@ -4,7 +4,7 @@
 
 ### Sitio web de Servimopar
 
-Repuestos para **Chevrolet, Dodge, Ram y Jeep** en el Centro de Bucaramanga.<br>
+Repuestos para **Dodge Journey, Chevrolet y Jeep** en el Centro de Bucaramanga.<br>
 Catálogo rápido, pensado para el celular, con cotización directa por WhatsApp.
 
 ![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)
@@ -21,7 +21,7 @@ Catálogo rápido, pensado para el celular, con cotización directa por WhatsApp
 
 ## Sobre el proyecto
 
-Servimopar es un almacén de repuestos en la Cra. 15 No. 24-36 del Centro de Bucaramanga, importador y distribuidor de repuestos para Chevrolet, Dodge, Ram, Jeep, LUV, Kodiak, NPR y NKR.
+Servimopar es un almacén de repuestos en la Cra. 15 No. 24-36 del Centro de Bucaramanga, importador y distribuidor de repuestos para Dodge, Chevrolet, Jeep, LUV, Kodiak, NPR y NKR, con énfasis en la **Dodge Journey**.
 
 Este sitio tiene un objetivo concreto: que quien busque en Google algo como *"repuestos Dodge Journey"* encuentre el almacén, vea la pieza que necesita y la cotice por WhatsApp en un toque. No hay pagos en línea: la venta sigue siendo de mostrador.
 
@@ -35,7 +35,7 @@ El diseño sale del propio local. El logo reproduce el letrero pintado a mano, e
 | **Cotización por WhatsApp** | Cada botón abre el chat con un mensaje ya escrito: pieza, modelo, años y número de parte. |
 | **SEO local** | JSON-LD `AutoPartsStore` con dirección, coordenadas y horario; `Product` en cada repuesto. |
 | **Rápido en el celular** | HTML estático, fotos en WebP responsive y casi nada de JavaScript. |
-| **Datos honestos** | Si falta un precio, la página dice *"cotizar"*; nada se inventa ni se marca como original sin serlo. |
+| **Cotización directa** | No se publican precios ni existencias: cada repuesto lleva un botón *"Cotizar precio y disponibilidad"* que abre WhatsApp. Nada se marca como original sin serlo. |
 | **Listo para compartir** | Open Graph con la foto real del local para que el enlace se vea bien en WhatsApp. |
 
 ## Tecnologías
@@ -107,8 +107,6 @@ El catálogo se administra desde `data/inventario.csv`; se puede editar con Exce
 | `numero_parte` | `EM-5612116` | |
 | `vehiculo_marca` / `vehiculo_modelo` | `Dodge` / `Journey` | |
 | `anio_desde` / `anio_hasta` | `2009` / `2020` | |
-| `precio_cop` | `185000` | Vacío = la página muestra *"cotizar"*. |
-| `stock` | `3` | `0` = agotado; vacío = *"consultar disponibilidad"*. |
 | `foto` | `soporte-motor-journey.jpg` | Archivo dentro de `public/fotos/repuestos/`. |
 | `descripcion` | | Texto libre. |
 
@@ -122,7 +120,8 @@ Cualquier dato puede quedar vacío: la página se adapta sin romperse. Las filas
 - `lang="es-CO"`.
 - **JSON-LD** con [schema.org](https://schema.org):
   - `AutoPartsStore` en el inicio y en contacto.
-  - `Product` en cada repuesto, con `Offer` solo cuando hay precio real.
+  - `Product` en cada repuesto, con la marca de la pieza y el vehículo compatible (sin `Offer`, porque no se publican precios).
+  - `BreadcrumbList` en la página de Dodge Journey.
   - La compatibilidad con el vehículo va en `isAccessoryOrSparePartFor`.
 - `sitemap.xml` y `robots.txt`.
 - Imágenes con texto alternativo descriptivo, `srcset` y carga diferida.
@@ -136,7 +135,7 @@ El sitio se publica en **Cloudflare Pages** conectado a este repositorio:
 |---|---|
 | Comando de build | `npm run build` |
 | Carpeta de salida | `dist` |
-| Variable de entorno | `SITE_URL` = dominio definitivo (opcional) |
+| Dominio | `servimopar.synic.com.co` (se puede cambiar con la variable `SITE_URL`) |
 
 Cada `git push` a `main` publica una nueva versión.
 
@@ -145,15 +144,15 @@ Cada `git push` a `main` publica una nueva versión.
 - [x] Proyecto base, marca y logo provisional
 - [x] Plantilla de repuesto con JSON-LD y WhatsApp
 - [x] Inicio y contacto con fotos reales, mapa y horario
-- [ ] Catálogo con filtros y página especial de Dodge Journey
+- [x] Página especial de Dodge Journey y repuestos destacados
 - [ ] Página *Nosotros* con la historia del almacén
 - [ ] Inventario real (20-30 repuestos de Dodge Journey con fotos)
-- [ ] Publicación en Cloudflare Pages y dominio propio
+- [ ] Publicación en Cloudflare Pages en `servimopar.synic.com.co`
 - [ ] Search Console, Analytics y Merchant Center
 
 ## Aviso legal
 
-Chevrolet, Dodge, Ram, Jeep, Mopar y las demás marcas mencionadas pertenecen a sus respectivos dueños. Sus nombres se usan solo para indicar con qué vehículos es compatible cada repuesto.
+Dodge, Chevrolet, Jeep y las demás marcas mencionadas pertenecen a sus respectivos dueños. Sus nombres se usan solo para indicar con qué vehículos es compatible cada repuesto.
 
 Este repositorio es público como referencia, pero **no tiene una licencia de código abierto**: el código, las fotos y la marca Servimopar son de uso reservado.
 

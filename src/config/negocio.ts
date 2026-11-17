@@ -12,7 +12,7 @@ export const negocio = {
   nombre: 'Servimopar',
   nombreLegal: 'Servimopar & Cía Ltda.', // TODO: confirmar con el certificado de Cámara de Comercio
   descripcion:
-    'Importadores y distribuidores de repuestos para Chevrolet, Dodge, Ram y Jeep en Bucaramanga. Cotiza por WhatsApp.',
+    'Importadores y distribuidores de repuestos para Dodge Journey, Chevrolet y Jeep en Bucaramanga. Cotiza por WhatsApp.',
   direccion: {
     calle: 'Cra. 15 No. 24-36',
     barrio: 'Centro',
@@ -22,10 +22,11 @@ export const negocio = {
     codigoPostal: undefined as string | undefined, // TODO: confirmar código postal
   },
   telefono: { visible: '607 683 5322', e164: '+576076835322' },
-  // TODO: confirmar con el dueño cuál WhatsApp es el principal (secundario: 310 302 4336).
-  whatsapp: { visible: '314 421 3447', numero: '573144213447' },
+  // WhatsApp de Servimopar, confirmado por el dueño (17-nov-2026).
+  whatsapp: { visible: '310 302 4336', numero: '573103024336' },
   correo: 'servimopar@gmail.com',
-  marcas: ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'Mopar', 'LUV', 'Kodiak', 'NPR', 'NKR'],
+  // Marcas de vehículos que se anuncian (el dueño pidió no mencionar Ram ni Mopar).
+  marcas: ['Dodge', 'Chevrolet', 'Jeep', 'LUV', 'Kodiak', 'NPR', 'NKR'],
 
   // Confirmado por el dueño (14-oct-2026). Horario partido = dos franjas con
   // los mismos días (así lo entiende schema.org).

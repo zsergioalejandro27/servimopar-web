@@ -15,8 +15,6 @@ export interface Repuesto {
   vehiculoModelo?: string;
   anioDesde?: number;
   anioHasta?: number;
-  precioCop?: number;
-  stock?: number;
   foto?: string;
   descripcion?: string;
   esEjemplo: boolean;
@@ -27,7 +25,7 @@ const texto = (v: unknown) => {
   return s === '' ? undefined : s;
 };
 const entero = (v: unknown) => {
-  const s = texto(v)?.replace(/[.\s$]/g, ''); // tolera "123.456" o "$ 123456"
+  const s = texto(v);
   if (!s) return undefined;
   const n = Number.parseInt(s, 10);
   return Number.isFinite(n) ? n : undefined;
@@ -73,8 +71,6 @@ function cargar(): Repuesto[] {
       vehiculoModelo: texto(f.vehiculo_modelo),
       anioDesde: entero(f.anio_desde),
       anioHasta: entero(f.anio_hasta),
-      precioCop: entero(f.precio_cop),
-      stock: entero(f.stock),
       foto: texto(f.foto),
       descripcion: texto(f.descripcion),
       esEjemplo: slug.startsWith('ejemplo-'),
@@ -110,24 +106,21 @@ export function tituloRepuesto(r: Repuesto): string {
   return [r.nombre, vehiculo(r), rangoAnios(r)].filter(Boolean).join(' ');
 }
 
-const formatoCOP = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
-export const precioLegible = (r: Repuesto) => (r.precioCop ? formatoCOP.format(r.precioCop) : undefined);
-
-export type Disponibilidad = 'disponible' | 'agotado' | 'consultar';
-export function disponibilidad(r: Repuesto): Disponibilidad {
-  if (r.stock === undefined) return 'consultar';
-  return r.stock > 0 ? 'disponible' : 'agotado';
-}
+// Precio y disponibilidad no se publican (decisión del dueño): siempre se cotizan por WhatsApp.
 
 export function fotoUrl(r: Repuesto): string {
   return r.foto ? `/fotos/repuestos/${r.foto}` : '/fotos/repuesto-sin-foto.svg';
 }
 
-/** Mensaje prellenado: "Hola, quiero cotizar: Soporte de motor Dodge Journey 2009-2020 (ref. 5085)" */
+/** "Hola, quiero cotizar precio y disponibilidad de: Soporte de motor Dodge Journey 2009-2020 (ref. 5085)" */
 export function mensajeCotizacion(r: Repuesto): string {
   const ref = r.numeroParte ? ` (ref. ${r.numeroParte})` : '';
-  return `Hola, quiero cotizar: ${tituloRepuesto(r)}${ref}`;
+  return `Hola, quiero cotizar precio y disponibilidad de: ${tituloRepuesto(r)}${ref}`;
 }
+
+/** Repuestos de un modelo, p. ej. todos los de la Journey. */
+export const repuestosDe = (modelo: string) =>
+  inventario.filter((r) => r.vehiculoModelo?.toLowerCase() === modelo.toLowerCase());
 
 /** Otros repuestos del mismo modelo, para enlazado interno. */
 export function relacionados(r: Repuesto, max = 6): Repuesto[] {

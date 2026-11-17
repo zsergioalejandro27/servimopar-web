@@ -7,17 +7,20 @@ import Foto from '../components/Foto.astro';
 import Horario from '../components/Horario.astro';
 import FranjaMarcas from '../components/FranjaMarcas.astro';
 import GaleriaAlmacen from '../components/GaleriaAlmacen.astro';
+import PiezasJourney from '../components/PiezasJourney.astro';
 import { inventario } from '../lib/inventario';
 import { jsonLdNegocio } from '../lib/seo';
 import { enlaceWhatsApp } from '../lib/whatsapp';
 import { negocio, direccionCompleta, fotosLocal } from '../config/negocio';
 
-const destacados = inventario.slice(0, 6);
-const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'NPR', 'NKR'];
+// Primero los de la Journey, que es lo que el almacén quiere destacar.
+const destacados = [...inventario]
+  .sort((a, b) => Number(b.vehiculoModelo === 'Journey') - Number(a.vehiculoModelo === 'Journey'))
+  .slice(0, 6);
 ---
 <Base
-  titulo="Repuestos Chevrolet, Dodge, Ram y Jeep en Bucaramanga | Servimopar"
-  descripcion="Importadores y distribuidores de repuestos para Chevrolet, Dodge, Ram y Jeep en el Centro de Bucaramanga. Dinos tu modelo y año, y cotiza por WhatsApp."
+  titulo="Repuestos Dodge Journey, Chevrolet y Jeep en Bucaramanga"
+  descripcion="Repuestos para Dodge Journey, Chevrolet, Jeep, LUV, Kodiak, NPR y NKR en el Centro de Bucaramanga. Cotiza precio y disponibilidad por WhatsApp en Servimopar."
   jsonLd={[jsonLdNegocio(Astro.site)]}
 >
   <section class="portada">
@@ -25,21 +28,32 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
     <Foto src={fotosLocal.interior.src} alt="" sizes="100vw" prioridad class="portada__foto" />
     <div class="contenedor portada__texto">
       <p class="portada__ubicacion">Cra. 15 No. 24-36 · Centro · Bucaramanga</p>
-      <h1>Repuestos para Chevrolet, Dodge, Ram y Jeep en Bucaramanga</h1>
-      <p class="portada__sub">Dinos tu modelo y año, y te confirmamos si lo tenemos.</p>
+      <h1>Repuestos para Dodge Journey, Chevrolet y Jeep en Bucaramanga</h1>
+      <p class="portada__sub">Dinos tu modelo y año, y te confirmamos precio y disponibilidad.</p>
       <div class="portada__botones">
         <a class="boton boton--whatsapp" href={enlaceWhatsApp()} target="_blank" rel="noopener">
-          <IconoWhatsApp /> Cotizar por WhatsApp
+          <IconoWhatsApp /> Cotizar precio y disponibilidad
         </a>
-        <a class="boton boton--claro" href={`tel:${negocio.telefono.e164}`}>Llamar al {negocio.telefono.visible}</a>
+        <a class="boton boton--claro" href="/dodge-journey/">Repuestos Dodge Journey</a>
       </div>
     </div>
   </section>
 
   <FranjaMarcas />
 
-  <!-- Buscador: arma un mensaje de WhatsApp con los datos del vehículo.
-       Cuando exista el catálogo (etapa 3) se agregará la búsqueda en el inventario. -->
+  <!-- Énfasis en la Dodge Journey (pedido del dueño). El enlace con el texto
+       "repuestos Dodge Journey" le indica a Google cuál es la página principal de ese tema. -->
+  <section class="seccion journey">
+    <div class="contenedor">
+      <p class="journey__etiqueta">Dodge Journey</p>
+      <h2 class="titulo-seccion">¿Tienes una Dodge Journey? Cotiza aquí tu repuesto</h2>
+      <p class="intro">Toca la pieza y se abre WhatsApp con el mensaje listo; solo agrega el año de tu Journey.</p>
+      <PiezasJourney />
+      <p class="journey__mas"><a href="/dodge-journey/">Ver todo sobre repuestos Dodge Journey →</a></p>
+    </div>
+  </section>
+
+  <!-- Buscador para cualquier marca: arma un mensaje de WhatsApp con los datos del vehículo. -->
   <section class="seccion seccion--suave">
     <div class="contenedor">
       <h2 class="titulo-seccion">¿Qué repuesto buscas?</h2>
@@ -48,7 +62,7 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
           <label for="b-marca">Marca</label>
           <select id="b-marca" name="marca" required>
             <option value="">Elige la marca</option>
-            {marcasVehiculo.map((m) => <option>{m}</option>)}
+            {negocio.marcas.map((m) => <option>{m}</option>)}
           </select>
         </div>
         <div>
@@ -153,6 +167,14 @@ const marcasVehiculo = ['Chevrolet', 'Dodge', 'Ram', 'Jeep', 'LUV', 'Kodiak', 'N
   @media (min-width: 1000px) { .buscador { grid-template-columns: repeat(4, 1fr) auto; align-items: end; } }
 
   .intro { max-width: 65ch; margin-bottom: 20px; }
+
+  .journey__etiqueta {
+    display: inline-block; margin-bottom: 8px; padding: 2px 12px; border-radius: 999px;
+    background: #a8502f; /* terracota oscurecida: contraste AA con texto blanco */
+    color: var(--blanco); font-weight: 700; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .journey__mas { margin-top: 18px; font-weight: 700; }
 
   .visita { display: grid; gap: 28px; }
   @media (min-width: 800px) { .visita { grid-template-columns: 1fr 1.5fr; align-items: start; } }

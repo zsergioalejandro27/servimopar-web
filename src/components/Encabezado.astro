@@ -5,9 +5,10 @@ import Logo from './Logo.astro';
 import { negocio } from '../config/negocio';
 
 const ruta = Astro.url.pathname;
-// TODO (etapas 3 y 4): agregar Repuestos, Dodge Journey y Nosotros cuando existan.
+// TODO: agregar "Nosotros" cuando esté la historia del almacén.
 const enlaces = [
   { href: '/', texto: 'Inicio' },
+  { href: '/dodge-journey/', texto: 'Dodge Journey' },
   { href: '/contacto/', texto: 'Contacto' },
 ];
 ---
@@ -34,11 +35,18 @@ const enlaces = [
 
 <style>
   .encabezado { background: var(--blanco); border-top: 4px solid var(--azul); }
+  /* Celular: logo arriba y menú en una segunda fila, para que quepan los tres enlaces. */
   .encabezado__fila {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    min-height: 68px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px;
+    min-height: 68px; padding-block: 10px 2px;
   }
-  .encabezado__logo { display: block; width: 168px; flex: none; }
+  .encabezado__logo { display: block; width: 190px; flex: none; }
+  nav { width: 100%; }
+  nav ul { justify-content: space-between; }
+  @media (min-width: 760px) {
+    .encabezado__fila { flex-wrap: nowrap; padding-block: 0; }
+    nav { width: auto; }
+  }
   .encabezado__logo :global(svg) { display: block; width: 100%; height: auto; }
   ul { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
   nav a {

@@ -1,45 +1,44 @@
 ---
-import {
-  type Repuesto, tituloRepuesto, precioLegible, disponibilidad, fotoUrl,
-} from '../lib/inventario';
+// Tarjeta de repuesto destacado: sin precio ni disponibilidad (se cotizan por
+// WhatsApp). El nombre lleva a la página del repuesto; el botón abre el chat.
+import IconoWhatsApp from './IconoWhatsApp.astro';
+import { type Repuesto, tituloRepuesto, fotoUrl, mensajeCotizacion } from '../lib/inventario';
+import { enlaceWhatsApp } from '../lib/whatsapp';
 
 interface Props {
   repuesto: Repuesto;
 }
 const { repuesto: r } = Astro.props;
 const titulo = tituloRepuesto(r);
-const precio = precioLegible(r);
-const disp = disponibilidad(r);
-const textoDisp = { disponible: 'Disponible', agotado: 'Agotado', consultar: 'Consultar disponibilidad' }[disp];
 ---
 <article class="tarjeta">
-  <a href={`/repuestos/${r.slug}/`} class="tarjeta__enlace">
-    <img
-      src={fotoUrl(r)}
-      alt={r.foto ? titulo : ''}
-      width="400" height="300" loading="lazy" decoding="async"
-    />
-    <div class="tarjeta__cuerpo">
-      <h3>{titulo}</h3>
-      {r.numeroParte && <p class="tarjeta__ref">Ref. <span class="mono">{r.numeroParte}</span></p>}
-      <p class="tarjeta__pie">
-        <span class={`etiqueta etiqueta--${disp}`}>{textoDisp}</span>
-        <strong>{precio ?? 'Cotizar'}</strong>
-      </p>
-    </div>
-  </a>
+  <img
+    src={fotoUrl(r)}
+    alt={r.foto ? titulo : ''}
+    width="400" height="300" loading="lazy" decoding="async"
+  />
+  <div class="tarjeta__cuerpo">
+    <h3><a href={`/repuestos/${r.slug}/`}>{titulo}</a></h3>
+    {r.numeroParte && <p class="tarjeta__ref">Ref. <span class="mono">{r.numeroParte}</span></p>}
+    <a class="boton boton--whatsapp tarjeta__cta" href={enlaceWhatsApp(mensajeCotizacion(r))} target="_blank" rel="noopener">
+      <IconoWhatsApp /> Cotizar precio y disponibilidad
+    </a>
+  </div>
 </article>
 
 <style>
-  .tarjeta { background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio); overflow: hidden; box-shadow: var(--sombra); }
-  /* Celular: tarjeta horizontal (foto pequeña a la izquierda) para ver varias a la vez. */
-  .tarjeta__enlace { display: grid; grid-template-columns: 112px 1fr; color: inherit; text-decoration: none; height: 100%; }
-  @media (min-width: 560px) { .tarjeta__enlace { display: block; } }
-  .tarjeta__enlace:hover h3 { color: var(--azul); text-decoration: underline; }
+  .tarjeta {
+    display: grid; grid-template-columns: 104px 1fr;
+    background: var(--blanco); border: 1px solid var(--borde); border-radius: var(--radio);
+    overflow: hidden; box-shadow: var(--sombra);
+  }
+  @media (min-width: 560px) { .tarjeta { display: flex; flex-direction: column; } }
   img { width: 100%; height: 100%; object-fit: cover; background: var(--fondo-suave); }
   @media (min-width: 560px) { img { height: auto; aspect-ratio: 4 / 3; } }
-  .tarjeta__cuerpo { padding: 12px 14px; }
-  h3 { font-size: 1rem; margin-bottom: 4px; }
-  .tarjeta__ref { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 8px; }
-  .tarjeta__pie { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0; flex-wrap: wrap; }
+  .tarjeta__cuerpo { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; flex: 1; }
+  h3 { font-size: 1rem; margin: 0; }
+  h3 a { color: var(--azul-noche); text-decoration: none; }
+  h3 a:hover { color: var(--azul); text-decoration: underline; }
+  .tarjeta__ref { font-size: 0.85rem; color: var(--texto-suave); margin: 0; }
+  .tarjeta__cta { margin-top: auto; min-height: 44px; padding: 0.55em 0.8em; font-size: 0.9rem; width: 100%; }
 </style>

@@ -2,10 +2,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// TODO: cambiar por el dominio definitivo cuando se compre (etapa 8).
+// Dominio público: subdominio de Synic (decisión del 17-nov-2026).
 // Se usa para las URL canónicas, Open Graph y el sitemap, así que debe ser
 // la dirección pública real. Se puede sobrescribir con la variable SITE_URL.
-const SITE_URL = process.env.SITE_URL ?? 'https://servimopar.pages.dev';
+const SITE_URL = process.env.SITE_URL ?? 'https://servimopar.synic.com.co';
 
 export default defineConfig({
   site: SITE_URL,
